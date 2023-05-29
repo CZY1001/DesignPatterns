@@ -7,7 +7,7 @@
  * @date: 2023/5/25
  * @version: V1.0
  */
-package com.example.demo.test.jitgou.agent.demo01;
+package com.example.demo.test.jiegou.agent.demo01;
 
 /**
  * fangdong

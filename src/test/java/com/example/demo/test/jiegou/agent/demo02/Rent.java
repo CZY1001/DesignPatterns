@@ -1,4 +1,4 @@
-package com.example.demo.test.jitgou.agent.demo01;
+package com.example.demo.test.jiegou.agent.demo02;
 
 /**
  * Rent
@@ -8,4 +8,7 @@ package com.example.demo.test.jitgou.agent.demo01;
  */
 public interface Rent {
     void rent();
+    void rent2();
+    void rent3();
+    void rent4();
 }

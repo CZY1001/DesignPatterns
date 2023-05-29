@@ -7,7 +7,7 @@
  * @date: 2023/5/23
  * @version: V1.0
  */
-package com.example.demo.test.jitgou.adapter;
+package com.example.demo.test.jiegou.adapter;
 
 /**
  * adaptee
