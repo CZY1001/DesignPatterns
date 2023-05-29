@@ -18,8 +18,16 @@ package com.example.demo.test.jiegou.decorator;
 public class client {
     public static void main(String[] args) {
         //点一份炒饭  10快钱
-        FriedRice friedRice = new FriedRice();
+        FastFood friedRice = new FriedRice();
 
+        System.out.println(friedRice.getDesc()+"------->"+friedRice.cost()+"块钱");
+
+        System.out.println("---------------我是一个分割线--------------------");
+        //现在想加个鸡蛋
+        friedRice= new Egg(friedRice);
+        System.out.println(friedRice.getDesc()+"------->"+friedRice.cost()+"块钱");
+        System.out.println("---------------我是一个分割线--------------------");
+        friedRice =  new huotui(friedRice);
         System.out.println(friedRice.getDesc()+"------->"+friedRice.cost()+"块钱");
     }
 }

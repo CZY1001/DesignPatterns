@@ -1112,3 +1112,233 @@ invoke被调用了
 rent4
 ```
 
+### 3.装饰器模式
+
+
+
+在不改变现有对象结构的情况下，动态的给该对象增加额外职责的模式
+
+
+
+快餐类，基类
+
+```java
+/**
+ * FastFood
+ * 装饰器模式-------- 快餐类   抽象构建角色
+ * @author czy
+ * @date 2023/5/29
+ */
+public abstract class FastFood {
+    private float price;//价格
+    private String desc;//描述
+
+    public FastFood() {
+    }
+
+    public FastFood(float price, String desc) {
+        this.price = price;
+        this.desc = desc;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public abstract  float cost();//价格计算
+}
+```
+
+
+
+
+
+炒面类和炒饭类，两大主食类
+
+```java
+/**
+ * FriedNoodles
+ *  炒面类  具体的构建角色
+ * @author czy
+ * @date 2023/5/29
+ */
+public class FriedNoodles  extends FastFood{
+
+    public FriedNoodles() {
+        //炒面15块钱一份
+        super(15,"炒面");
+    }
+
+    @Override
+    public float cost() {
+        return getPrice();
+    }
+}
+
+/**
+ * FriedRice
+ *  炒饭类 具体构建角色
+ * @author czy
+ * @date 2023/5/29
+ */
+public class FriedRice  extends FastFood{
+
+    public FriedRice() {
+        //炒饭10块钱一份
+        super(10,"炒饭");
+    }
+    @Override
+    public float cost() {
+        return getPrice();
+    }
+}
+```
+
+
+
+
+
+配菜抽象类，  就是装饰角色的抽象
+
+```java
+/**
+ * Garnish
+ *  抽象的装饰角色
+ * @author czy
+ * @date 2023/5/29
+ */
+public abstract class Garnish extends FastFood{
+    //声明快餐类的变量---个人理解是用来存炒饭炒面的变量
+    private FastFood fastFood;
+
+    public Garnish(FastFood fastFood,float price, String desc) {
+        super(price, desc);
+        this.fastFood = fastFood;
+    }
+
+    public FastFood getFastFood() {
+        return fastFood;
+    }
+
+    public void setFastFood(FastFood fastFood) {
+        this.fastFood = fastFood;
+    }
+}
+```
+
+
+
+火腿类和鸡蛋类，配菜的实现类  实际的装饰者
+
+```java
+/**
+ * huotui
+ *  我现在是具体的快餐装饰类   火腿类
+ * @author czy
+ * @date 2023/5/29
+ */
+public class huotui extends Garnish{
+
+
+    public huotui(FastFood fastFood) {
+        //加火腿肠额外加8块钱
+        super(fastFood, 8, "火腿肠");
+    }
+
+    @Override
+    public float cost() {
+        return getPrice()+getFastFood().cost();
+    }
+
+    @Override
+    public String getDesc() {
+        return getFastFood().getDesc()+"加"+super.getDesc();
+    }
+}
+
+/**
+ * Egg
+ *  鸡蛋类   具体的装饰者角色
+ * @author czy
+ * @date 2023/5/29
+ */
+public class Egg extends Garnish{
+
+    //这里的传过来的FastFood  实际上是炒饭，炒面
+    public Egg(FastFood fastFood) {
+        //加鸡蛋额外加5块钱
+        super(fastFood,5,"鸡蛋");
+    }
+
+    @Override
+    public float cost() {
+        return getPrice()+ getFastFood().cost();
+    }
+
+    @Override
+    public String getDesc() {
+        return getFastFood().getDesc()+"加"+super.getDesc();
+    }
+}
+```
+
+
+
+客户端  ，调用者  使用者
+
+```java
+/**
+ * client
+ *  客户端    实际调用者  测试类
+ * @author czy
+ * @date 2023/5/29
+ */
+public class client {
+    public static void main(String[] args) {
+        //点一份炒饭  10快钱
+        FastFood friedRice = new FriedRice();
+
+        System.out.println(friedRice.getDesc()+"------->"+friedRice.cost()+"块钱");
+
+        System.out.println("---------------我是一个分割线--------------------");
+        //现在想加个鸡蛋
+        friedRice= new Egg(friedRice);
+        System.out.println(friedRice.getDesc()+"------->"+friedRice.cost()+"块钱");
+        System.out.println("---------------我是一个分割线--------------------");
+        friedRice =  new huotui(friedRice);
+        System.out.println(friedRice.getDesc()+"------->"+friedRice.cost()+"块钱");
+    }
+}
+```
+
+
+
+输出结果
+
+
+
+```text
+炒饭------->10.0块钱
+---------------我是一个分割线--------------------
+炒饭加鸡蛋------->15.0块钱
+---------------我是一个分割线--------------------
+炒饭加鸡蛋加火腿肠------->23.0块钱
+```
+
+
+
+
+
+

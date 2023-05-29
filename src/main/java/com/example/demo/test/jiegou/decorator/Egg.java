@@ -17,7 +17,7 @@ package com.example.demo.test.jiegou.decorator;
  */
 public class Egg extends Garnish{
 
-
+    //这里的传过来的FastFood  实际上是炒饭，炒面
     public Egg(FastFood fastFood) {
         super(fastFood,5,"鸡蛋");
     }
@@ -29,6 +29,6 @@ public class Egg extends Garnish{
 
     @Override
     public String getDesc() {
-        return super.getDesc()+getFastFood().getDesc();
+        return getFastFood().getDesc()+"加"+super.getDesc();
     }
 }

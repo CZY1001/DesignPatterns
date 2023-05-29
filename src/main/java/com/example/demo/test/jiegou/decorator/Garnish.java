@@ -16,7 +16,7 @@ package com.example.demo.test.jiegou.decorator;
  * @date 2023/5/29
  */
 public abstract class Garnish extends FastFood{
-    //声明快餐类的变量---个人理解是用来存配菜的变量
+    //声明快餐类的变量---个人理解是用来存炒饭炒面的变量
     private FastFood fastFood;
 
     public Garnish(FastFood fastFood,float price, String desc) {

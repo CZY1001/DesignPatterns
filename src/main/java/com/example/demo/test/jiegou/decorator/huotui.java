@@ -29,6 +29,7 @@ public class huotui extends Garnish{
 
     @Override
     public String getDesc() {
-        return super.getDesc()+ getFastFood().getDesc();
+        System.out.println(getDesc());
+        return getFastFood().getDesc()+"加"+super.getDesc();
     }
 }

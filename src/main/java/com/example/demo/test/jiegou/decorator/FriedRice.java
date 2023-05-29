@@ -18,6 +18,7 @@ package com.example.demo.test.jiegou.decorator;
 public class FriedRice  extends FastFood{
 
     public FriedRice() {
+        //炒饭10块钱一份
         super(10,"炒饭");
     }
     @Override
