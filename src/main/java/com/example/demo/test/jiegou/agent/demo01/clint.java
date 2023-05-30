@@ -18,8 +18,7 @@ package com.example.demo.test.jiegou.agent.demo01;
 public class clint {
 
     public static void main(String[] args) {
-        fangdong fangdong = new fangdong();
-        prox prox = new prox(fangdong);
+        prox prox = new prox();
         prox.rent();
     }
 }

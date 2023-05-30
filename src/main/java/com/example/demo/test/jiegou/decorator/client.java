@@ -27,7 +27,7 @@ public class client {
         friedRice= new Egg(friedRice);
         System.out.println(friedRice.getDesc()+"------->"+friedRice.cost()+"块钱");
         System.out.println("---------------我是一个分割线--------------------");
-        friedRice =  new huotui(friedRice);
-        System.out.println(friedRice.getDesc()+"------->"+friedRice.cost()+"块钱");
+        huotui friedRices =  new huotui(friedRice);
+        System.out.println(friedRices.getDesc()+"------->"+friedRices.cost()+"块钱");
     }
 }

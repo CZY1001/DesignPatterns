@@ -34,6 +34,7 @@ public class proxInvocationHandler implements InvocationHandler {
         /**
          * Proxy提供了创建动态代理类和实例的静态方法
          * newProxyInstance(ClassLoader loader, 类<?>[] interfaces, InvocationHandler h)
+         *
          * loader - 类加载器来定义代理类
          * interfaces - 代理类实现的接口列表
          * h - 调度方法调用的调用处理函数
@@ -43,7 +44,7 @@ public class proxInvocationHandler implements InvocationHandler {
     }
 
     /**
-     *
+     *重写invoke类
      * @param proxy  调用的对象
      * @param method   调用的方法信息，例如方法名、返回类型等等
      * @param args

@@ -16,11 +16,8 @@ package com.example.demo.test.jiegou.agent.demo01;
  * @date 2023/5/25
  */
 public class prox  implements Rent{
-    private  fangdong from;
+    private  fangdong from = new fangdong();
     public prox() {
-    }
-    public prox(fangdong from) {
-        this.from = from;
     }
 
     @Override
