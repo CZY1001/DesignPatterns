@@ -1338,6 +1338,139 @@ public class client {
 炒饭加鸡蛋加火腿肠------->23.0块钱
 ```
 
+## 行为型模式
+
+###  1.模板方法模式
+
+一个抽象类公开定义了执行它的方法的方式/模板。它的子类可以按需要重写方法实现，但调用将以抽象类中定义的方式进行。这种类型的设计模式属于行为型模式
+
+
+
+抽象类 定义了模板方法 不可重写    和 基本方法 以及具体的抽象方法
+
+```java
+/**
+ * AbstractClass
+ *  抽象类  定义模板方法和基本方法
+ * @author czy
+ * @date 2023/5/31
+ */
+public abstract class AbstractClass {
+
+    //模板方法定义
+    public final void pengreng(){
+        daoyou();
+        reyou();
+        daocai();
+        tiaoliao();
+        fanchao();
+    }
+    //倒油
+    public void  daoyou(){
+        System.out.println("倒油");
+    }
+    //热油
+    public void reyou(){
+        System.out.println("热油");
+    }
+    //倒菜
+    public abstract void daocai();
+    //加调料
+    public abstract void tiaoliao();
+    //翻炒
+    public void fanchao(){
+        System.out.println("抄啊抄啊抄熟了");
+    }
+}
+```
+
+
+
+两个具体的炒菜实现类  根据自身业务实现具体的倒菜和加调料方法，根据需要决定是否要重写倒油方法
+
+```java
+/**
+ * baoCai
+ *          抄包菜的类
+ * @author czy
+ * @date 2023/5/31
+ */
+public class baoCai extends AbstractClass{
+    @Override
+    public void daocai() {
+        System.out.println("包菜下锅");
+    }
+
+    @Override
+    public void daoyou() {
+        System.out.println("倒入菜籽油");
+    }
+
+    @Override
+    public void tiaoliao() {
+        System.out.println("加入辣椒大蒜调味");
+    }
+}
+/**
+ * rousi
+ *   玉米炒肉类
+ * @author czy
+ * @date 2023/5/31
+ */
+public class rousi  extends AbstractClass{
+    @Override
+    public void daocai() {
+        System.out.println("倒入肉丝");
+    }
+
+    @Override
+    public void tiaoliao() {
+        System.out.println("加入玉米调味");
+    }
+}
+```
+
+测试者，实际调用者
+
+```java
+/**
+ * client
+ *  测试类，实际调用者
+ * @author czy
+ * @date 2023/5/31
+ */
+public class client {
+
+    public static void main(String[] args) {
+        //我现在要炒包菜
+        AbstractClass baocai = new baoCai();
+        baocai.pengreng();
+        System.out.println("----------------------------------");
+        //我现在要做玉米炒肉
+        AbstractClass rousi = new rousi();
+        rousi.pengreng();
+    }
+}
+```
+
+
+
+结果打印
+
+```text
+倒入菜籽油
+热油
+包菜下锅
+加入辣椒大蒜调味
+抄啊抄啊抄熟了
+----------------------------------
+倒油
+热油
+倒入肉丝
+加入玉米调味
+抄啊抄啊抄熟了
+```
+
 
 
 
