@@ -162,7 +162,7 @@ public class mgr03 {
  * 如果实例化 instance 很消耗资源，所以想让它延迟加载，另外一方面，又不希望在 Singleton 类加载时就实例化，
  * 因为不能确保 Singleton 类还可能在其他的地方被主动使用从而被加载，
  * 那么这个时候实例化 instance 显然是不合适的。这个时候，这种方式相比饿汉式就显得很合理。
- * 
+ *
  * @author czy
  * @date 2023/5/2
  */
@@ -183,7 +183,7 @@ public class mgr04 {
 /**
  * mgr05
  *枚举式
- * 
+ *
  * 这种实现方式还没有被广泛采用，但这是实现单例模式的最佳方法。它更简洁，自动支持序列化机制，绝对防止多次实例化。
  * 这种方式是 Effective Java 作者提倡的方式，它不仅能避免多线程同步问题，而且还自动支持序列化机制，
  * 防止反序列化重新创建新的对象，绝对防止多次实例化。不过，由于 JDK1.5 之后才加入 enum 特性，用这种方式写不免让人感觉生疏，在实际工作中，也很少用。
@@ -262,7 +262,7 @@ public class CarFactory {
 
 调用者在调用的时候，只需要new出对应系列的工厂实现类，调用目标对象的生产方法，就可以获取到目标对象
 
- ![image-20230518163206794](C:\Users\18750\AppData\Roaming\Typora\typora-user-images\image-20230518163206794.png)
+![image-20230518163206794](C:\Users\18750\AppData\Roaming\Typora\typora-user-images\image-20230518163206794.png)
 
 ![image-20230518171819946](C:\Users\18750\AppData\Roaming\Typora\typora-user-images\image-20230518171819946.png)
 
@@ -413,7 +413,7 @@ public class worker extends Builder{
 
 
 
-建造者指挥类  领导者 
+建造者指挥类  领导者
 
 ```java
 /**
@@ -486,7 +486,7 @@ public abstract class Builder {
 }
 ```
 
- 
+
 
 工人类的实现类
 
@@ -607,7 +607,7 @@ public class product {
 
 ### 4.原型模式
 
-本质上就是深拷贝和浅拷贝  
+本质上就是深拷贝和浅拷贝
 
 浅拷贝实现起来非常的简单，只需要这个类实现Cloneable接口，重写一下clone方法
 
@@ -663,17 +663,17 @@ public class Video implements Cloneable{
 }
 ```
 
- 
+
 
 #### 2.深克隆
 
-深克隆的实现方式有很多种，例如反序列化 、改造克隆方法(最简单的)  讲其引用类型的属性进行再次clone 
+深克隆的实现方式有很多种，例如反序列化 、改造克隆方法(最简单的)  讲其引用类型的属性进行再次clone
 
 ```java
 public Video(String name, Date createTime) {
-    this.name = name;
-    this.createTime = createTime;
-}
+        this.name = name;
+        this.createTime = createTime;
+        }
 ```
 
 
@@ -728,7 +728,7 @@ public class adaptee {
  * @date 2023/5/23
  */
 public interface netToUsb {
-    
+
     //处理请求
     void handleRequest();
 }
@@ -803,7 +803,7 @@ public class computer {
         //电脑、适配器、网线----
         computer computer = new computer();//使用者   电脑
         adaptee adaptee = new adaptee();//网线
-        
+
         adapter adapter = new adapter(adaptee);//转接器  类适配器的时候
         adapter2 adapter = new adapter2(adaptee);//转接器  对象适配器、常用
 
@@ -831,7 +831,7 @@ public class computer {
 
 
 
-个人理解 ---- 房东和中介都实现了租房抽象类，因为我们两个都有一个目标，租房    
+个人理解 ---- 房东和中介都实现了租房抽象类，因为我们两个都有一个目标，租房
 
 房东实现了了租房子的具体方法，中介将房东当做属性，调用房东的租房方法，并执行一些自己的附加内容，进行租房子代理
 
@@ -965,7 +965,17 @@ java字节码实现，javasist   (适用于jboss服务器)
 - 公共业务发送扩展的时候，方便集中管理，
 - 一个动态代理类代理的是一个接口，一般就是对应的一类业务
 
+
+
+
+
 基于jdk的动态代理
+
+> 动态生成的代理类 会去默认继承Proxy这个类  ，同时 还会去实现我们被代理的接口
+>
+> 因为单继承的特性，所以动态代理只能代理有接口的类
+
+
 
 租房抽象类
 
@@ -1112,7 +1122,7 @@ invoke被调用了
 rent4
 ```
 
-### 3.装饰器模式
+### *3.装饰器模式
 
 
 
@@ -1120,6 +1130,9 @@ rent4
 
 有一个快餐积累，有价格和名称属性，两个主食来继承他，   配菜抽象类继承快餐类获取基础属性，并添加主食变量，配菜实现类实现了具体的配菜以及价格，在构造时传入主食类，进行关联
 
+
+
+在io流的  装饰器里有用到
 
 快餐类，基类
 
@@ -1338,6 +1351,8 @@ public class client {
 炒饭加鸡蛋加火腿肠------->23.0块钱
 ```
 
+
+
 ## 行为型模式
 
 ###  1.模板方法模式
@@ -1349,6 +1364,7 @@ public class client {
 具体实现类继承后  重写固定的具体方法，以及根据自身需要重写倒油或热油方法
 
 调用者只需要 实例化具体方法  和抽象类    ，调用模板方法即可。
+
 
 
 抽象类 定义了模板方法 不可重写    和 基本方法 以及具体的抽象方法
@@ -1476,8 +1492,136 @@ public class client {
 抄啊抄啊抄熟了
 ```
 
+### 2.策略模式
+
+
+
+将类似的不同情况下 执行的不同业务  抽象到策略类里  然后每个执行实现去实现这个策略类，环境类提供了调用方式
+
+实际调用者可以根据不同的情况 传入策略实现类对象就能调用到想要 的业务执行
+
+
+
+抽象的策略类
+
+
+
+```java
+/**
+ * Strategy
+ *  抽象的策略类
+ * @author czy
+ * @date 2023/6/1
+ */
+public interface  Strategy {
+     void show();
+}
+```
 
 
 
 
+
+具体的策略类
+
+```java
+/**
+ * strateA
+ *     具体策略类
+ * @author czy
+ * @date 2023/6/1
+ */
+public class strateA implements Strategy{
+    @Override
+    public void show() {
+        System.out.println("买一送一");
+    }
+}
+
+/**
+ * strateB
+ *   具体策略实现类
+ * @author czy
+ * @date 2023/6/1
+ */
+public class strateB implements Strategy{
+    @Override
+    public void show() {
+        System.out.println("全场八折");
+    }
+}
+
+/**
+ * strateC
+ *
+ * @author czy
+ * @date 2023/6/1
+ */
+public class strateC implements Strategy{
+    @Override
+    public void show() {
+        System.out.println("满500减100");
+    }
+}
+```
+
+
+
+环境类  提供一个
+
+```java
+/**
+ * strateMan
+ *  促销员     环境类
+ * @author czy
+ * @date 2023/6/1
+ */
+public class strateMan {
+    //聚合一下策略对象
+    private Strategy strategy;
+
+    public strateMan(Strategy strategy) {
+        this.strategy = strategy;
+    }
+
+    //促销员根据环境来展示不同的促销活动（调用不同的策略）
+    public void salesMan(){
+        strategy.show();
+    }
+}
+```
+
+
+
+调用者
+
+```java
+/**
+ * clint
+ *   测试类   实际调用者
+ * @author czy
+ * @date 2023/6/1
+ */
+public class clint {
+    public static void main(String[] args) {
+        //现在是春节   执行A活动
+        strateMan strateMan = new strateMan(new strateA());
+        strateMan.salesMan();
+        //现在国庆节   执行B活动
+        strateMan = new strateMan(new strateB());
+        strateMan.salesMan();
+        //现在是圣诞节   执行C活动
+        strateMan = new strateMan(new strateC());
+        strateMan.salesMan();
+    }
+}
+```
+
+打印结果
+
+```text
+买一送一
+全场八折
+满500减100
+```
 

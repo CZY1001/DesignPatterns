@@ -9,13 +9,17 @@
  */
 package com.example.demo.test.jiegou.agent.demo02;
 
+import java.io.InputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
  * proxInvocationHandler
+ *    代理类的生成类
  *
+ *    动态生成的代理类 会去默认继承Proxy这个类  ，同时 还会去实现我们被代理的接口
+ *    因为单继承的特性，所以动态代理只能代理有接口的类
  * @author czy
  * @date 2023/5/28
  */
