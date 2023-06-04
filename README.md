@@ -1041,7 +1041,7 @@ public class fangdong implements Rent {
  */
 public class proxInvocationHandler implements InvocationHandler {
 
-//被代理的接口
+    //被代理的接口
     private Object test;
 
     public void setObject(Object rent) {
@@ -1514,7 +1514,7 @@ public class client {
  * @date 2023/6/1
  */
 public interface  Strategy {
-     void show();
+    void show();
 }
 ```
 
@@ -1623,5 +1623,195 @@ public class clint {
 买一送一
 全场八折
 满500减100
+```
+
+
+
+### 3.命令模式
+
+
+
+将一个请求封装成一个对象，使发出请求的责任和执行请求的责任分隔开，这样两者之间通过命令对象进行沟通，方便讲命令对象进行存储，传递，调用，增加和管理
+
+请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该命令传给相应的对象，该对象执行命令
+
+抽象命令类：定义命令的接口，声明执行的方法
+
+具体命令类：具体的命令方法，实现命令接口，通常会持有接受者，并调用接受者的功能来完成命令要执行的操作
+
+接受者：真正去执行命令的对象，任何类都可能成为一个接受者，只要它能够实现命令要求实现的相应功能
+
+调用者 ：要求命令对象执行请求，通常会持有命令对象，可以持有多个命令对象，这个是 客户端实际需要调用的地方，相当于是命令对象的入口
+
+
+
+
+
+抽象命令类
+
+```java
+/**
+ * 抽象命令类
+ */
+public interface mingling {
+    void execute();
+}
+```
+
+
+
+具体的命令类
+
+```java
+/**
+ * 具体的命令类
+ */
+public class dingdanOrder implements mingling{
+
+    //持有接受者对象
+    private chushi chushi;
+
+    //持有订单对象
+    private Order Order;
+
+    public dingdanOrder(com.example.demo.test.xingwei.command.chushi chushi, com.example.demo.test.xingwei.command.Order order) {
+        this.chushi = chushi;
+        Order = order;
+    }
+
+    @Override
+    public void execute() {
+        System.out.println("-----------"+Order.getDingingTable() + "桌的订单----------");
+        Map<String, Integer> foodDir = Order.getFoodDir();
+        foodDir.forEach((key,value)->{
+            chushi.makeFood(key,value);
+        });
+        System.out.println(Order.getDingingTable() + "桌的饭搞好了，上菜！！！！！！！！！！！！！！！！！");
+
+    }
+}
+```
+
+
+
+命令接受者
+
+```java
+/**
+ * 命令模式   厨师类  命令执行者
+ */
+public class chushi {
+    public void makeFood(String name , int num){
+        System.out.println(num+"份"+name);
+    }
+}
+```
+
+订单实体类
+
+```java
+/**
+ * 命令者模式  订单类
+ */
+public class Order {
+
+    //餐桌号码
+    private int dingingTable;
+
+    private Map<String,Integer> foodDir = new HashMap<>();
+
+    public int getDingingTable() {
+        return dingingTable;
+    }
+
+    public void setDingingTable(int dingingTable) {
+        this.dingingTable = dingingTable;
+    }
+
+    public Map<String, Integer> getFoodDir() {
+        return foodDir;
+    }
+
+    public void setFood(String name, Integer num) {
+        this.foodDir.put(name, num);
+    }
+}
+```
+
+命令的调用者
+
+```java
+/**
+ * 服 务员类  请求者 调用者角色
+ */
+public class waitor {
+    //持有多个命令对象
+    private List<mingling> commands = new ArrayList<>();
+
+    public void setCommand(mingling commands) {
+        this.commands.add(commands);
+    }
+
+    //发起命令的方法 喊订单来了   厨师就开始干活
+
+    public  void orderUp(){
+        System.out.println("服务员：来活咯，厨师快干活");
+        this.commands.forEach(item->{
+            if (item!=null){
+                item.execute();
+            }
+        });
+    }
+}
+```
+
+客户端类  测试类
+
+```java
+/**
+ * 客户端，实际调用者   来吃饭的     命令者模式
+ */
+public class clint {
+    public static void main(String[] args) {
+        //第一个来吃饭的
+        Order o1 = new Order();
+        o1.setFood("大盘鸡",2);
+        o1.setFood("宫保鸡丁",1);
+        o1.setDingingTable(1);
+        //第二个来吃饭的
+
+        Order o2 = new Order();
+        o2.setFood("葱爆羊肉",2);
+        o2.setFood("油焖大虾",1);
+        o2.setFood("大窑",5);
+        o2.setDingingTable(3);
+
+        //创建厨师
+        chushi chushi = new chushi();
+        //创建命令对象
+        mingling dingdanOrder1 = new dingdanOrder(chushi,o1);
+        mingling dingdanOrder2 = new dingdanOrder(chushi,o2);
+        //创建服务员
+        waitor waitor = new waitor();
+        waitor.setCommand(dingdanOrder1);
+        waitor.setCommand(dingdanOrder2);
+        waitor.orderUp();
+    }
+}
+```
+
+输出结果
+
+```text
+服务员：来活咯，厨师快干活
+-----------1桌的订单----------
+1份宫保鸡丁
+2份大盘鸡
+1桌的饭搞好了，上菜！！！！！！！！！！！！！！！！！
+-----------3桌的订单----------
+5份大窑
+2份葱爆羊肉
+1份油焖大虾
+3桌的饭搞好了，上菜！！！！！！！！！！！！！！！！！
 ```
 
