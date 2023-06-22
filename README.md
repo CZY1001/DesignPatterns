@@ -1341,8 +1341,6 @@ public class client {
 
 输出结果
 
-
-
 ```text
 炒饭------->10.0块钱
 ---------------我是一个分割线--------------------
@@ -1351,11 +1349,11 @@ public class client {
 炒饭加鸡蛋加火腿肠------->23.0块钱
 ```
 
-
+### 4.外观模式TODO
 
 ## 行为型模式
 
-###  1.模板方法模式
+### 1.模板方法模式
 
 一个抽象类公开定义了执行它的方法的方式/模板。它的子类可以按需要重写方法实现，但调用将以抽象类中定义的方式进行。这种类型的设计模式属于行为型模式
 
@@ -1513,7 +1511,7 @@ public class client {
  * @author czy
  * @date 2023/6/1
  */
-public interface  Strategy {
+public interface Strategy {
     void show();
 }
 ```
@@ -2039,4 +2037,168 @@ public class clint {
 总经理审批，同意
 审批结束！！！！放假去吧
 ```
+
+### 5.观察者模式
+
+又被称为 发布/订阅 模式 他定义了一种多对一的关系，让多个观察者对象同时监听某一主题对象，这个主题对象在状态变化的时候，会通知所有的观察者对象，使他们能够自动更新自己
+
+使用场景： 对象间存在一对多关系时，一个对象的状态发生改变会影响其他对象
+
+​ 当一个抽象模型有两个方面，其中一个方面依赖于另一个方面时
+
+角色：
+
+（抽象主题）抽象被观察者：吧所有观察者对象保存在一个集合里，每个主题都可以有任意数量的观察者，抽象主题提供一个接口，可以增加和删除观察者对象
+
+（具体主题）具体被观察者：该橘色将有关状态存入具体观察者对象，在具体主题的内部状态发生改变时，给所有注册过的观察者发送通知
+
+抽象观察者：是观察者的抽象类。他定义了一个更新接口，使得在得到主题更改通知时更新自己
+
+具体被观察者：实现抽象观察者定义的更新接口，以使在得到主题更改通知时更新自身的状态
+
+现有需求，在使用微信公众号时，当你关注的公众号中有更新内容的时候，他会推送给关注这个公众号的所有微信以及QQ客户端，使用观察者模式来模拟次场景
+
+我认为就是被观察者用来存储以及通知 的载体
+
+```java
+/**
+ * 抽象观察者类
+ */
+public interface Observe {
+
+    //主题推送更新
+    void update(String msg);
+}
+```
+
+具体的观察者类 实现类 一般是需要对公众号进行观察监听的实例 QQ客户端
+
+```java
+/**
+ * 具体的观察者类  qq客户端
+ */
+public class TengxunQQ implements Observe {
+    private String name;
+
+    public TengxunQQ(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public void update(String msg) {
+        System.out.println(this.name + "---在QQ频道接收到了消息------=" + msg);
+    }
+}
+```
+
+微信客户端
+
+```java
+/**
+ * 具体的观察者类
+ */
+public class weiXinUser implements Observe {
+    private String name;
+
+    public weiXinUser(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public void update(String msg) {
+        System.out.println(this.name + "-----在微信公众号接收到了消息------=" + msg);
+    }
+}
+```
+
+抽象的被观察者 （抽象主题类） 定义了被观察者 对观察者操作的一些抽象行为
+
+```java
+/**
+ * 抽象主题角色类   被观察者
+ */
+public interface Subject {
+
+    //添加订阅者  （添加观察者对象）
+    void attach(Observe observe);
+
+    //删除订阅者  （删除观察者对象）
+    void detach(Observe observe);
+
+    //通知订阅者  更新消息
+    void notify(String msg);
+}
+```
+
+具体主题角色类 （被观察者类） 公众号
+
+定义了一个集合来存储关注了我这个公众号的客户端 然后notify对这个集合遍历，调用他们的推送更新方法，进行消息推送，但是我觉得这里的遍历会不会不太好？真实场景是不是应该多线程去发送这些消息？ 然后还可以保证消息的有序性，那就可以用队列来存
+
+```java
+/**
+ * 具体主题角色类   （被观察者类）   公众号
+ */
+public class Subsciptionsubject implements Subject {
+    //定义一个集合来存储多个观察者对象
+    private List<Observe> list = new ArrayList<>();
+
+    @Override
+    public void attach(Observe observe) {
+        list.add(observe);
+    }
+
+    @Override
+    public void detach(Observe observe) {
+        list.remove(observe);
+    }
+
+    //通知订阅者  更新消息
+    @Override
+    public void notify(String msg) {
+        //当公证号里面内容发送变化时会执行
+        list.forEach(item -> {
+            //调用观察者对象中的更新方法
+            item.update(msg);
+        });
+    }
+}
+```
+
+测试类
+
+我感觉这里的new 对象可以 想象成 从数据库查询订阅了公众号的数据 然后批量插入到集合里 最后调用他提供的消息推送方法,j将需要更新的消息推送过去
+
+```java
+/**
+ * 测试类
+ */
+public class clint {
+    public static void main(String[] args) {
+        //创建公众号对象
+        Subject subject = new Subsciptionsubject();
+        //订阅公众号
+        Observe observe = new TengxunQQ("czyyy");
+        Observe observe2 = new weiXinUser("lsz");
+        subject.attach(observe);
+        subject.attach(observe2);
+        //推送消息
+        subject.notify("czyyyy中了五百万彩票");
+    }
+}
+```
+
+```text
+czyyy---在QQ频道接收到了消息------=czyyyy中了五百万彩票
+lsz-----在微信公众号接收到了消息------=czyyyy中了五百万彩票
+```
+
+### 6.中介模式TODO
+
+
+
+
+
+
+
+
 
