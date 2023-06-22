@@ -1815,3 +1815,228 @@ public class clint {
 3桌的饭搞好了，上菜！！！！！！！！！！！！！！！！！
 ```
 
+
+
+### 4.责任链模式
+
+filter过滤器就是用到了这个设计模式，还有java异常类的处理
+
+现有一个需求  ，开发一个请假的流程控制系统，请假一天以下，只需要小组长同意即可，请假一天到三天需要部门经理同意，请假3-7天需要总经理同意，超过七天直接打回
+
+
+
+
+
+满足开闭原则，后续如果增加审批节点，我只需要再加个类 去继承那个抽象类，然后构造里定义自己的审批规则，重写审批类就行了
+
+
+
+请假条实体类
+
+```java
+/**
+ * 责任链模式
+ * 请假条类
+ */
+public class LeaveRequest {
+    //请假人姓名
+    private String name;
+    //请假天数
+    private Integer number;
+    //请假内容
+    private String content;
+
+    public LeaveRequest(String name, Integer number, String content) {
+        this.name = name;
+        this.number = number;
+        this.content = content;
+    }
+    public String getName() {
+        return name;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public String getContent() {
+        return content;
+    }
+}
+```
+
+
+
+核心类
+
+抽象的处理者抽象类
+
+定义了请假的规则常量，定义了抽象的处理请假的方法，提供了请假提交类，进行请假条处理，以及递归层层往上抛
+
+各个领导实现这个抽象类只需要集成构造，并指定自己需要审批的时间区间
+
+
+
+```java
+/**
+ * 责任链模式
+ *
+ * 抽象处理者类
+ */
+public abstract class Handler {
+    protected final static int NUM_ONE = 1;
+    protected final static int NUM_THREE = 3;
+    protected final static int NUM_SEVER = 7;
+
+    //该领导处理的请假区间
+    private int numStart;
+    private int numEnd;
+
+    //声明后继者
+    private Handler nextHandler;
+
+    public Handler(int numStart) {
+        this.numStart = numStart;
+    }
+
+    public Handler(int numStart, int numEnd) {
+        this.numStart = numStart;
+        this.numEnd = numEnd;
+    }
+    //设置后继者对象
+    public void setNextHandler(Handler nextHandler) {
+        this.nextHandler = nextHandler;
+    }
+    //各领导处理请求条的方法
+    protected abstract void handleLeave(LeaveRequest leave);
+
+    //提交请假条
+    public final void submit(LeaveRequest leave){
+        //判断请假时间是否符合规定
+        if(leave.getNumber()> NUM_SEVER){
+            System.out.println("请假时间过长，不允许");
+            return;
+        }
+        //该领导先进行审批
+        this.handleLeave(leave);
+        //判断有没有上级领导，并且需不需要上级领导审批、
+        if (nextHandler != null && leave.getNumber() > this.numEnd) {
+            //提交给上级领导进行审批
+            this.nextHandler.submit(leave);
+        } else {
+            System.out.println("审批结束！！！！放假去吧");
+        }
+    }
+}
+```
+
+
+
+
+
+组长类
+
+```java
+/**
+ * 我是小组长
+ * 我可以审批0到一天的调休
+ */
+public class groupLeader extends Handler {
+
+    public groupLeader(){
+        super(0,NUM_ONE);
+    }
+    @Override
+    protected void handleLeave(LeaveRequest leave) {
+        System.out.println(leave.getName()+"请假"+leave.getNumber()+"天-----"+leave.getContent());
+        System.out.println("小组长审批，同意");
+    }
+}
+```
+
+部门经理类
+
+```java
+/**
+ * 部门经理类
+ * 我可以审批1-3天的请假
+ */
+public class manager extends Handler{
+
+    public manager(){
+        super(NUM_ONE,NUM_THREE);
+    }
+
+    @Override
+    protected void handleLeave(LeaveRequest leave) {
+        System.out.println(leave.getName()+"请假"+leave.getNumber()+"天-----"+leave.getContent());
+        System.out.println("部门经理审批，同意");
+    }
+}
+```
+
+
+
+总经理类
+
+```java
+/**
+ * 总经理类
+ * 我可以审批
+ */
+public class GeneralManager extends Handler{
+
+    public GeneralManager(){
+        super(NUM_THREE,NUM_SEVER);
+    }
+
+    @Override
+    protected void handleLeave(LeaveRequest leave) {
+        System.out.println(leave.getName()+"请假"+leave.getNumber()+"天-----"+leave.getContent());
+        System.out.println("总经理审批，同意");
+    }
+}
+```
+
+
+
+实际调用者
+
+测试类
+
+```java
+/**
+ * 测试类  实际调用者
+ */
+public class clint {
+    public static void main(String[] args) {
+        //创建一个请假对象
+        LeaveRequest leaveRequest = new LeaveRequest("小明",7,"出去玩");
+        //创建各级领导对象
+        groupLeader groupLeader = new groupLeader();
+        manager manager = new manager();
+        GeneralManager generalManager = new GeneralManager();
+        //设置处理者链
+        groupLeader.setNextHandler(manager);
+        manager.setNextHandler(generalManager);
+
+        //提交请假申请
+        groupLeader.submit(leaveRequest);
+    }
+}
+```
+
+
+
+运行结果
+
+```text
+小明请假7天-----出去玩
+小组长审批，同意
+小明请假7天-----出去玩
+部门经理审批，同意
+小明请假7天-----出去玩
+总经理审批，同意
+审批结束！！！！放假去吧
+```
+
