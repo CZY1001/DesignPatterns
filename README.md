@@ -1351,6 +1351,116 @@ public class client {
 
 ### 4.外观模式TODO
 
+我们将创建一个 Shape 接口和实现了 Shape 接口的实体类。下一步是定义一个外观类 ShapeMaker。
+
+ShapeMaker 类使用实体类来代表用户对这些类的调用。FacadePatternDemo 类使用 ShapeMaker 类来显示结果。
+
+
+首先有个抽象类来抽象需要被外观访问的方法
+
+```java
+
+package com.example.demo.test.jiegou.appearance;
+
+/**
+ * @author czy
+ * @description 抽象的接口，定义了哪些方法需要被外观访问
+ * @date 2023/7/24
+ */
+public interface shape {
+    /**
+     * 说话
+     */
+    void say();
+}
+
+```
+
+各个需要被外观访问的子类，实现抽象接口，根据自身业务实现被外观访问方法
+
+```java
+/**
+ * @author czy
+ * @description 根据自身业务实现了接口里面的需要外观访问的方法
+ * @date 2023/7/24
+ */
+public class cow implements shape{
+    @Override
+    public void say() {
+        System.out.println("我是牛，我说话：哞！！！哞！！！牟！！！");
+    }
+}
+
+/**
+ * @author czy
+ * @description 根据自身业务实现了接口里面的需要外观访问的说话方法
+ * @date 2023/7/24
+ */
+public class human implements shape{
+    @Override
+    public void say() {
+        System.out.println("我是人，我说话是：哈！！！哈！！！哈！！");
+    }
+}
+
+/**
+ * @author czy
+ * @description 根据自身业务实现了接口里面的需要外观访问的方法
+ * @date 2023/7/24
+ */
+public class pig implements shape{
+    @Override
+    public void say() {
+        System.out.println("我是猪，我说话是，哼哧！！哼哧！！！");
+    }
+}
+
+```
+
+外观类 对外提供需要被访问方法的入口
+
+```java
+
+/**
+ * @author czy
+ * @description 我是外观类，对外提供各种动物叫声的方法
+ * @date 2023/7/24
+ */
+public class shapeMake {
+    public void haha(shape shape){
+        shape.say();
+    }
+}
+```
+
+测试类
+
+```java
+/**
+ * @author czy
+ * @description 客户端调用者
+ * @date 2023/7/24
+ */
+public class clint {
+
+    public static void main(String[] args) {
+        shapeMake shapeMake = new shapeMake();
+        shapeMake.haha(new human());
+        shapeMake.haha(new cow());
+        shapeMake.haha(new pig());
+    }
+}
+
+```
+测试结果
+
+```text
+我是人，我说话是：哈！！！哈！！！哈！！
+我是牛，我说话：哞！！！哞！！！牟！！！
+我是猪，我说话是，哼哧！！哼哧！！！
+```
+
+
 ## 行为型模式
 
 ### 1.模板方法模式
