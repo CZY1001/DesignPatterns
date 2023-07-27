@@ -1349,7 +1349,7 @@ public class client {
 炒饭加鸡蛋加火腿肠------->23.0块钱
 ```
 
-### 4.外观模式TODO
+### 4.外观模式
 
 我们将创建一个 Shape 接口和实现了 Shape 接口的实体类。下一步是定义一个外观类 ShapeMaker。
 
@@ -2302,8 +2302,71 @@ czyyy---在QQ频道接收到了消息------=czyyyy中了五百万彩票
 lsz-----在微信公众号接收到了消息------=czyyyy中了五百万彩票
 ```
 
-### 6.中介模式TODO
+### 6.中介模式
 
+没啥好说的、这个还是比较简单的
+
+中介类，提供被调用类的功能方法
+```java
+/**
+ * @author czy
+ * @description 中介类
+ * @date 2023/7/26
+ */
+public class chatRom {
+    public static void showMessage(User user, String message){
+        System.out.println(DateUtils.formatDate(new Date(),"yyyy-MM-dd HH:mm:ss") + "------>"+user.getName() + " : "+message);
+
+    }
+}
+```
+
+用户类、实际功能的载体
+```java
+/**
+ * @author czy
+ * @description 用户类
+ * @date 2023/7/26
+ */
+public class User {
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public User(String name) {
+        this.name = name;
+    }
+    public void sendMessage(String message){
+        chatRom.showMessage(this,message);
+    }
+}
+```
+客户类，实际调用者
+```java
+/**
+ * @author czy
+ * @description 客户类
+ * @date 2023/7/27
+ */
+public class clint {
+    public static void main(String[] args) {
+        User czyy = new User("czyy");
+        User zhangsan = new User("张三");
+
+        czyy.sendMessage("开饭啦，快去干饭！！！！！！！！！！！！！！！！！！！！！！！！！");
+        zhangsan.sendMessage("我是法外狂徒，法律不可能制裁我");
+    }
+}
+```
+
+实际输出结果
+```text
+2023-07-27 01:41:24------>czyy : 开饭啦，快去干饭！！！！！！！！！！！！！！！！！！！！！！！！！
+2023-07-27 01:41:24------>张三 : 我是法外狂徒，法律不可能制裁我
+
+```
 
 
 
