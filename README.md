@@ -1349,7 +1349,117 @@ public class client {
 炒饭加鸡蛋加火腿肠------->23.0块钱
 ```
 
-### 4.外观模式TODO
+### 4.外观模式
+
+我们将创建一个 Shape 接口和实现了 Shape 接口的实体类。下一步是定义一个外观类 ShapeMaker。
+
+ShapeMaker 类使用实体类来代表用户对这些类的调用。FacadePatternDemo 类使用 ShapeMaker 类来显示结果。
+
+
+首先有个抽象类来抽象需要被外观访问的方法
+
+```java
+
+package com.example.demo.test.jiegou.appearance;
+
+/**
+ * @author czy
+ * @description 抽象的接口，定义了哪些方法需要被外观访问
+ * @date 2023/7/24
+ */
+public interface shape {
+    /**
+     * 说话
+     */
+    void say();
+}
+
+```
+
+各个需要被外观访问的子类，实现抽象接口，根据自身业务实现被外观访问方法
+
+```java
+/**
+ * @author czy
+ * @description 根据自身业务实现了接口里面的需要外观访问的方法
+ * @date 2023/7/24
+ */
+public class cow implements shape{
+    @Override
+    public void say() {
+        System.out.println("我是牛，我说话：哞！！！哞！！！牟！！！");
+    }
+}
+
+/**
+ * @author czy
+ * @description 根据自身业务实现了接口里面的需要外观访问的说话方法
+ * @date 2023/7/24
+ */
+public class human implements shape{
+    @Override
+    public void say() {
+        System.out.println("我是人，我说话是：哈！！！哈！！！哈！！");
+    }
+}
+
+/**
+ * @author czy
+ * @description 根据自身业务实现了接口里面的需要外观访问的方法
+ * @date 2023/7/24
+ */
+public class pig implements shape{
+    @Override
+    public void say() {
+        System.out.println("我是猪，我说话是，哼哧！！哼哧！！！");
+    }
+}
+
+```
+
+外观类 对外提供需要被访问方法的入口
+
+```java
+
+/**
+ * @author czy
+ * @description 我是外观类，对外提供各种动物叫声的方法
+ * @date 2023/7/24
+ */
+public class shapeMake {
+    public void haha(shape shape){
+        shape.say();
+    }
+}
+```
+
+测试类
+
+```java
+/**
+ * @author czy
+ * @description 客户端调用者
+ * @date 2023/7/24
+ */
+public class clint {
+
+    public static void main(String[] args) {
+        shapeMake shapeMake = new shapeMake();
+        shapeMake.haha(new human());
+        shapeMake.haha(new cow());
+        shapeMake.haha(new pig());
+    }
+}
+
+```
+测试结果
+
+```text
+我是人，我说话是：哈！！！哈！！！哈！！
+我是牛，我说话：哞！！！哞！！！牟！！！
+我是猪，我说话是，哼哧！！哼哧！！！
+```
+
 
 ## 行为型模式
 
@@ -2192,8 +2302,72 @@ czyyy---在QQ频道接收到了消息------=czyyyy中了五百万彩票
 lsz-----在微信公众号接收到了消息------=czyyyy中了五百万彩票
 ```
 
-### 6.中介模式TODO
+### 6.中介模式
 
+没啥好说的、这个还是比较简单的
+
+中介类，提供被调用类的功能方法
+
+```java
+/**
+ * @author czy
+ * @description 中介类
+ * @date 2023/7/26
+ */
+public class chatRom {
+    public static void showMessage(User user, String message){
+        System.out.println(DateUtils.formatDate(new Date(),"yyyy-MM-dd HH:mm:ss") + "------>"+user.getName() + " : "+message);
+
+    }
+}
+```
+
+用户类、实际功能的载体
+```java
+/**
+ * @author czy
+ * @description 用户类
+ * @date 2023/7/26
+ */
+public class User {
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public User(String name) {
+        this.name = name;
+    }
+    public void sendMessage(String message){
+        chatRom.showMessage(this,message);
+    }
+}
+```
+客户类，实际调用者
+```java
+/**
+ * @author czy
+ * @description 客户类
+ * @date 2023/7/27
+ */
+public class clint {
+    public static void main(String[] args) {
+        User czyy = new User("czyy");
+        User zhangsan = new User("张三");
+
+        czyy.sendMessage("开饭啦，快去干饭！！！！！！！！！！！！！！！！！！！！！！！！！");
+        zhangsan.sendMessage("我是法外狂徒，法律不可能制裁我");
+    }
+}
+```
+
+实际输出结果
+```text
+2023-07-27 01:41:24------>czyy : 开饭啦，快去干饭！！！！！！！！！！！！！！！！！！！！！！！！！
+2023-07-27 01:41:24------>张三 : 我是法外狂徒，法律不可能制裁我
+
+```
 
 
 
