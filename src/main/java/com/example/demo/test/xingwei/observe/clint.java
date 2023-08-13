@@ -12,6 +12,8 @@ public class clint {
         //订阅公众号
         Observe observe = new TengxunQQ("czyyy");
         Observe observe2 = new weiXinUser("lsz");
+
+        //
         subject.attach(observe);
         subject.attach(observe2);
         //推送消息
