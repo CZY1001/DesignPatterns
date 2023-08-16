@@ -45,7 +45,7 @@ public class intToRoman {
         StringBuilder stringBuilder = new StringBuilder();
 
         for (int i = 0; i < values.size(); i++) {
-            while (num > values.get(i)){
+            while (num >= values.get(i)){
                 stringBuilder.append(rom.get(i));
                 num-= values.get(i);
             }
