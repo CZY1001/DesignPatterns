@@ -1,5 +1,10 @@
 package com.example.demo.algorithm;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author czy
  * @description
@@ -9,6 +14,9 @@ public class test {
     public static void main(String[] args) {
 
     }
+
+
+
 
     /**
      * 给定一个长度为 n 的整数数组 height 。有 n 条垂线，第 i 条线的两个端点是 (i, 0) 和 (i, height[i]) 。
@@ -27,8 +35,6 @@ public class test {
         }
         return res;
     }
-
-
 
     /**
      * 给你一个整数 x ，如果 x 是一个回文整数，返回 true ；否则，返回 false 。
