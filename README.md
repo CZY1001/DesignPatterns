@@ -599,7 +599,7 @@ public class product {
 
 实际使用对象者
 
-左边是默认构建的使用，右边是需要自定义的构建
+左边是默认构建的使用，右边是需要自定义的构建  
 
 ![image-20230521192845712](C:\Users\18750\AppData\Roaming\Typora\typora-user-images\image-20230521192845712.png)
 
