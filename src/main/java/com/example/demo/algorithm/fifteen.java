@@ -43,6 +43,12 @@ public class fifteen {
                 int sum = nums[i] + nums[zuo] + nums[you];
                 if (sum == 0) {
                     ans.add(Arrays.asList(nums[i], nums[zuo], nums[you]));
+                    while (zuo < you && nums[zuo] == nums[zuo + 1]) {
+                        zuo++;
+                    }
+                    while (zuo < you && nums[you] == nums[you - 1]) {
+                        you--;
+                    }
                     /*while (you < zuo && nums[zuo] == nums[you+1]){
                         you++;
                     }*/
@@ -55,7 +61,8 @@ public class fifteen {
                 }
             }
         }
-        return ans.stream().distinct().collect(Collectors.toList());
+        //完善这个去重的问题
+        return ans;
 
     }
 }
