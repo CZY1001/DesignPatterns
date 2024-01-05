@@ -13,12 +13,16 @@ package com.example.demo.algorithm;
 当然，上述的描述过程我们使用了乘法，实际我们却不能使用乘法，所以，我们可以使用加法来处理
  */
 public class TwentyNine {
+    public static void main(String[] args) {
+        TwentyNine twentyNine = new TwentyNine();
+        twentyNine.test(-2147483648, -1);
+    }
     public static int MAX = Integer.MAX_VALUE;
     public static int MIN = Integer.MIN_VALUE;
 
     public  int test(int beichushu, int chushu) {
         //校验溢出情况
-        if (beichushu == MAX && chushu == MIN) {
+        if (beichushu == MIN && chushu == -1) {
             return MAX;
         }
         //记录结果的符号
@@ -35,9 +39,9 @@ public class TwentyNine {
         // 倍乘法，注意都是负数了，比较的时候与正数相反
         // 简单点理解，就是每次减去除数的 2^x 倍数，剩下的部分继续按这样的规则继续
         while (beichushu <= chushu) {
-            int tmp = chushu;
+            int tmp = chushu, count = 1;
             //记录累加几次
-            int count = 1;
+
             // 这里注意不要写成 tmp + tmp >= beichushu，这样写加法有可能会溢出导致死循环
             while (tmp >= beichushu - tmp) {
                 tmp += tmp;
