@@ -20,6 +20,12 @@ import java.util.Map;
  * 解法：滑动窗口（官方解法）
  */
 public class thirty {
+    public static void main(String[] args) {
+        thirty thirty = new thirty();
+        String[] words = new String[]{"bar","foo","the"};
+        List<Integer> barfoofoobarthefoobarman = thirty.findSubstring("barfoofoobarthefoobarman", words);
+        barfoofoobarthefoobarman.forEach(System.out::println);
+    }
 
     public List<Integer> findSubstring(String s, String[] words) {
         List<Integer> res = new ArrayList<>();
@@ -58,11 +64,26 @@ public class thirty {
             }
             //开始滑动
             for (int start = i; start < stringLen - num * wordlen + 1; start += wordlen) {
-
+                if (start != i) {
+                    //首先  右边的单次滑动进来
+                    String word = s.substring(start + (num-1) * wordlen, start + num * wordlen);
+                    differ.put(word, differ.getOrDefault(word, 0) + 1);
+                    if (differ.get(word) == 0) {
+                        differ.remove(word);
+                    }
+                    //左边的单词滑出去
+                    word = s.substring(start - wordlen, start);
+                    differ.put(word, differ.getOrDefault(word, 0) - 1);
+                    if (differ.get(word) == 0) {
+                        differ.remove(word);
+                    }
+                }
+                //窗口匹配的单词数等于words中对应的单词数
+                if (differ.isEmpty()) {
+                    res.add(start);
+                }
             }
         }
-
-
-        return null;
+        return res;
     }
 }
